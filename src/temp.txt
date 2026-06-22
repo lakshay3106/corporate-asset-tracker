@@ -1,0 +1,148 @@
+ /*<div className="app-container">
+
+     <Navbar />
+
+      <Sidebar />
+      <h2>Total Assets :{totalAssets}</h2>
+      <h2>Available: {availableAssets}</h2>
+      <h2>Assigned: {assignedAssets}</h2>
+      <h2>Under Repair: {repairAssets}</h2>
+      <div className="section">
+        <h2>Add Asset</h2>
+
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Enter Asset Name"
+            value={assetName}
+            onChange={(e) =>
+              setAssetName(e.target.value)
+            }
+          />
+
+          <select
+            value={status}
+            onChange={(e) =>
+              setStatus(e.target.value)
+            }
+          >
+            <option>Available</option>
+            <option>Assigned</option>
+            <option>Under Repair</option>
+          </select>
+
+          <button onClick={handleAsset}>
+            Add Asset
+          </button>
+        </div>
+      </div>
+
+      <div className="section">
+        <h2>Search Assets</h2>
+
+        <input
+          type="text"
+          placeholder="Search Assets"
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+
+        />
+
+        <select
+            value={filter}
+            onChange={(e)=>setFilter(e.target.value)}
+            >
+                <option>All</option>
+               <option>Available</option>
+                <option>Assigned</option>
+                <option>Under Repair</option>
+            </select>
+
+        <select 
+            value={sort}
+            onChange={(e)=>setSort(e.target.value)}
+            >
+              <option>None</option>
+              <option>A-Z</option>
+              <option>Z-A</option>
+              <option>Newest First</option>
+              <option>Oldest First</option>
+            </select>
+
+        <p>
+          You searched for:{" "}
+          <strong>{search}</strong>
+        </p>
+      </div>
+
+      <div className="assets-section">
+        <h2>Assets</h2>
+
+        <div className="asset-grid">
+         {paginatedAssets
+            .map((asset) => (
+              <AssetCard
+                key={asset.id}
+                id={asset.id}
+                name={asset.name}
+                status={asset.status}
+                onDelete={handleDelete}
+                onUpdate={handleUpdate}
+              />
+            ))}
+        </div>
+                   <div className="pagination">
+    <button
+        className="pagination-btn"
+        onClick={handlePrevious}
+        disabled={currentPage === 1}
+    >
+        Previous
+    </button>
+
+    <span className="page-info">
+        Page {currentPage} of {totalPages}
+    </span>
+
+    <button
+        className="pagination-btn"
+        onClick={handleNext}
+         disabled={currentPage === totalPages}
+    >
+        Next
+    </button>
+</div>
+
+      </div>
+
+      {
+  showModal && (
+    <div className="modal">
+      <div className="modal-content">
+        <h3>Confirm Deletion</h3>
+
+        <p>
+          Delete "{assetToDelete.name}"?
+        </p>
+
+        <button onClick={()=>{
+          setShowModal(false);
+          setAssetToDelete(null);
+        }}>
+          Cancel
+        </button>
+
+        <button onClick={confirmDelete}>
+          Delete
+        </button>
+      </div>
+
+      
+    </div>
+  )
+}
+
+    </div>
+    */
