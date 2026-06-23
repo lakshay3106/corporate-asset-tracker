@@ -93,10 +93,11 @@ function handleReject(request) {
                 <td>{asset.id}</td>
 
                 <td>{asset.name}</td>
-
+                    <td>
                  <span className={`status ${asset.status.replace(" ", "-")}`}>
                         {asset.status}
     </span>
+    </td>
 
                 <td>
                     {

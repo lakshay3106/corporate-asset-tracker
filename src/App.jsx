@@ -81,7 +81,9 @@ useEffect(() => {
 
 <Route
   path="/my-desk"
-  element={<MyDesk />}
+  element={<MyDesk 
+                assets={assets}
+                setAssets={setAssets}/>}
 />
       </Routes>
 
