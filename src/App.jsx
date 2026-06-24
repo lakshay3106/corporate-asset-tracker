@@ -49,10 +49,13 @@ useEffect(() => {
   return (
     <BrowserRouter>
 
-      <Navbar />
+       <Navbar />
+
+  <div className="flex">
 
       <Sidebar />
 
+    <div className="flex-1 p-8 bg-slate-100 min-h-screen">
       <Routes>
        <Route
   path="/"
@@ -86,7 +89,8 @@ useEffect(() => {
                 setAssets={setAssets}/>}
 />
       </Routes>
-
+</div>
+</div>
     </BrowserRouter>
   );
 }

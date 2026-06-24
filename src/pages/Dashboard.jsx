@@ -43,10 +43,12 @@ const stats = [
 
     return (
         <div>
-            <h1>Dashboard</h1>
+    <h1 className="text-4xl font-bold text-slate-800 mb-8">
+        Dashboard
+    </h1>
 
             <div>
-                <div className="dashboard-grid">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
     {stats.map((stat) => (
         <SummaryCard
             key={stat.title}

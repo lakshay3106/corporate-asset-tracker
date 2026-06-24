@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AssetCard from "../components/AssetCard";
+import { FaSearch } from "react-icons/fa";
 
 function Assets({assets,setAssets}) {
 
@@ -156,18 +157,64 @@ function handleDelete(asset) {
 
 
     return (
-  <div className="app-container">
+  <div className="space-y-8">
 
-    <h2>Total Assets : {totalAssets}</h2>
-    <h2>Available: {availableAssets}</h2>
-    <h2>Assigned: {assignedAssets}</h2>
-    <h2>Under Repair: {repairAssets}</h2>
+    <h1 className="text-4xl font-bold text-slate-800">
+    Asset Management
+</h1>
 
-    <div className="section">
-      <h2>Add Asset</h2>
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-      <div className="form-group">
-        <input
+    <div className="bg-white p-6 rounded-2xl shadow-md">
+        <h3 className="text-gray-500">
+            Total Assets
+        </h3>
+
+        <p className="text-4xl font-bold mt-2">
+            {totalAssets}
+        </p>
+    </div>
+
+    <div className="bg-green-50 p-6 rounded-2xl shadow-md">
+        <h3 className="text-gray-500">
+            Available
+        </h3>
+
+        <p className="text-4xl font-bold mt-2 text-green-600">
+            {availableAssets}
+        </p>
+    </div>
+
+    <div className="bg-purple-50 p-6 rounded-2xl shadow-md">
+        <h3 className="text-gray-500">
+            Assigned
+        </h3>
+
+        <p className="text-4xl font-bold mt-2 text-purple-600">
+            {assignedAssets}
+        </p>
+    </div>
+
+    <div className="bg-orange-50 p-6 rounded-2xl shadow-md">
+        <h3 className="text-gray-500">
+            Under Repair
+        </h3>
+
+        <p className="text-4xl font-bold mt-2 text-orange-600">
+            {repairAssets}
+        </p>
+    </div>
+
+</div>
+
+    <div className="bg-white p-8 rounded-2xl shadow-md">
+
+    <h2 className="text-2xl font-bold mb-6 text-slate-800">
+        Add New Asset
+    </h2>
+
+    <div className="flex flex-col md:flex-row gap-4">
+        <input  className="w-full md:flex-1 p-3 border rounded-lg"
           type="text"
           placeholder="Enter Asset Name"
           value={assetName}
@@ -176,7 +223,15 @@ function handleDelete(asset) {
           }
         />
 
-        <select
+        <select  className="
+        p-3
+        border
+        border-gray-300
+        rounded-lg
+        focus:outline-none
+        focus:ring-2
+        focus:ring-blue-500
+    "
           value={status}
           onChange={(e) =>
             setStatus(e.target.value)
@@ -187,48 +242,111 @@ function handleDelete(asset) {
           <option>Under Repair</option>
         </select>
 
-        <button onClick={handleAsset}>
+        <button className="
+        bg-blue-600
+        text-white
+        px-6
+        py-3
+        rounded-lg
+        hover:bg-blue-700
+        transition-all
+        duration-300
+        font-semibold
+    " onClick={handleAsset}>
           Add Asset
         </button>
       </div>
     </div>
 
-    <div className="section">
-      <h2>Search Assets</h2>
+    <div className="bg-white p-8 rounded-2xl shadow-md">
 
-      <input
+    <h2 className="text-2xl font-bold mb-6">
+    Search & Filter Assets
+</h2>
+
+  <div className="relative flex-1">
+
+    <FaSearch
+        className="
+            absolute
+            left-4
+            top-1/2
+            -translate-y-1/2
+            text-gray-400
+            text-lg
+        "
+    />
+
+    <input
+        className="
+            w-full
+            pl-12
+            pr-4
+            py-4
+            text-lg
+            bg-slate-50
+            border-2
+            border-gray-200
+            rounded-xl
+            shadow-sm
+            transition-all
+            duration-300
+            focus:outline-none
+            focus:border-blue-500
+            focus:ring-4
+            focus:ring-blue-100
+            hover:border-gray-300
+        "
         type="text"
-        placeholder="Search Assets"
+        placeholder="Search assets by name..."
         value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-      />
+        onChange={(e) => setSearch(e.target.value)}
+    />
 
-      <select
+</div>
+
+     <div className="flex gap-6 mt-4">
+
+    <select
+        className="
+            w-40
+            p-3
+            border
+            border-gray-300
+            rounded-lg
+        "
         value={filter}
         onChange={(e) =>
-          setFilter(e.target.value)
+            setFilter(e.target.value)
         }
-      >
+    >
         <option>All</option>
         <option>Available</option>
         <option>Assigned</option>
         <option>Under Repair</option>
-      </select>
+    </select>
 
-      <select
+    <select
+        className="
+            w-40
+            p-3
+            border
+            border-gray-300
+            rounded-lg
+        "
         value={sort}
         onChange={(e) =>
-          setSort(e.target.value)
+            setSort(e.target.value)
         }
-      >
+    >
         <option value="none">None</option>
         <option value="A-Z">A-Z</option>
         <option value="Z-A">Z-A</option>
         <option value="newest">Newest First</option>
         <option value="oldest">Oldest First</option>
-      </select>
+    </select>
+
+</div>
 
       <p>
         You searched for:{" "}
