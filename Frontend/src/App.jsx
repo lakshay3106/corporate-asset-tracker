@@ -17,7 +17,6 @@ import "./App.css";
 
 function App() {
 
-     const savedAssets = localStorage.getItem("assets");
     const [assets, setAssets] = useState([]);
 
     const initialRequests = [
@@ -41,11 +40,6 @@ useEffect(()=>{
       console.error(error);
     })
 },[]);
-
-
-useEffect(() => {
-  localStorage.setItem("assets", JSON.stringify(assets));
-}, [assets]);
 
 
   return (

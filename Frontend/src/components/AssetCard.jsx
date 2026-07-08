@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaLaptop, FaEdit, FaTrash } from "react-icons/fa";
 
 function AssetCard(props) {
+    
 
     const [isEditing, setisEditing] = useState(false);
     const [editedName, setEditedName] = useState(props.name);
@@ -81,7 +82,7 @@ function AssetCard(props) {
                             onClick={() => {
 
                                 const updatedAsset = {
-                                    id: props.id,
+                                    _id: props._id,
                                     name: editedName,
                                     status: editedStatus
                                 };
@@ -125,7 +126,7 @@ function AssetCard(props) {
                     </h3>
 
                     <p className="text-gray-500 mb-2">
-                        Asset ID: {props.id}
+                        Asset ID: {props._id}
                     </p>
 
                     <span className={`
@@ -157,7 +158,7 @@ function AssetCard(props) {
                             onClick={() => {
 
                                 const assetToDelete = {
-                                    id: props.id,
+                                    _id: props._id,
                                     name: props.name,
                                     status: props.status
                                 };

@@ -93,19 +93,6 @@ const paginatedAssets =
         endIndex
     );
 
-
-function confirmDelete() {
-    setAssets(
-        assets.filter(
-            (asset) =>
-                asset.id !== assetToDelete.id
-        )
-    );
-
-    setShowModal(false);
-    setAssetToDelete(null);
-}
-
 function handlePrevious() {
     if (currentPage > 1) {
         setCurrentPage(currentPage - 1);
@@ -121,9 +108,8 @@ function handleNext() {
 async function handleUpdate(updatedAsset) {
     console.log("handleUpdate called", updatedAsset);
     try {
-        console.log("Before fetch");
         const response = await fetch(
-            `http://localhost:5000/assets/${updatedAsset.id}`,
+            `http://localhost:5000/assets/${updatedAsset._id}`,
             {
                 method: "PUT",
                 headers: {
@@ -145,7 +131,7 @@ async function handleUpdate(updatedAsset) {
         setAssets((prevAssets) =>
             prevAssets.map((asset) => {
 
-                if (asset.id === assetFromBackend.id) {
+                if (asset._id === assetFromBackend._id) {
                     return assetFromBackend;
                 }
 
@@ -195,7 +181,7 @@ async function handleAsset() {
     } catch (error) {
 
         console.error(error);
-
+        toast.error(error.message);
     }
 
 }
@@ -209,7 +195,7 @@ async function confirmDelete() {
     try {
 
         const response = await fetch(
-            `http://localhost:5000/assets/${assetToDelete.id}`,
+            `http://localhost:5000/assets/${assetToDelete._id}`,
             {
                 method: "DELETE"
             }
@@ -221,7 +207,7 @@ async function confirmDelete() {
 
         setAssets(prevAssets =>
             prevAssets.filter(
-                asset => asset.id !== assetToDelete.id
+                asset => asset._id !== assetToDelete._id
             )
         );
 
@@ -442,8 +428,8 @@ async function confirmDelete() {
       <div className="asset-grid">
         {paginatedAssets.map((asset) => (
           <AssetCard
-            key={asset.id}
-            id={asset.id}
+            key={asset._id}
+            _id={asset._id}
             name={asset.name}
             status={asset.status}
             onDelete={handleDelete}
