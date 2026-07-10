@@ -5,66 +5,139 @@ import {
 
 function Requests({ assets, setAssets, requests, setRequests }) {
 
-    function handleRequest(asset) {
+   
+    async function handleRequest(asset) {
 
-        const newRequest = {
-            id: Date.now(),
-            employeeName: "Lakshay",
-            assetId: asset.id,
-            requestStatus: "Pending",
-            requestDate: new Date().toLocaleDateString()
-        };
+    try {
 
-        setRequests([
-            ...requests,
-            newRequest
-        ]);
-    }
-    const pendingRequests = requests.filter((request) =>
-        request.requestStatus === "Pending");
+        const response = await fetch(
+            "http://localhost:5000/requests",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
 
+                    employeeName: "Lakshay",
+                    employeeId: "EMP101",
 
-    function handleApprove(request) {
-        setRequests(requests.map((req) => {
-            if (req.id === request.id) {
-                return {
-                    ...req,
-                    requestStatus: "Approved"
-                };
+                    assetName: asset.name,
+                    assetId: asset._id
 
+                })
             }
-            return req;
-        })
         );
 
-        setAssets(
-            assets.map((asset) => {
-                if (asset.id === request.assetId) {
-                    return {
-                        ...asset,
-                        status: "Assigned"
-                    };
-                }
-                return asset;
-            })
-        )
+        if (!response.ok) {
+            throw new Error("Failed to create request");
+        }
+
+        const newRequest = await response.json();
+
+        setRequests(prev =>
+            [...prev, newRequest]
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
 
     }
 
-    function handleReject(request) {
-        setRequests(
-            requests.map((req) => {
-                if (req.id === request.id) {
-                    return {
-                        ...req,
-                        requestStatus: "Rejected"
-                    };
-                }
+}
 
-                return req;
-            })
-        )
+
+    const pendingRequests = requests.filter(
+    (request) => request.status === "Pending"
+);
+
+
+   async function handleApprove(request) {
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:5000/requests/${request._id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status: "Approved"
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to approve request");
+        }
+
+        const updatedRequest = await response.json();
+
+        // Update Requests
+        setRequests(prev =>
+            prev.map(req =>
+                req._id === updatedRequest._id
+                    ? updatedRequest
+                    : req
+            )
+        );
+
+        // Refresh Assets
+        const assetResponse = await fetch("http://localhost:5000/assets");
+        const updatedAssets = await assetResponse.json();
+
+        setAssets(updatedAssets);
+
     }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+   async function handleReject(request) {
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:5000/requests/${request._id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status: "Rejected"
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to reject request");
+        }
+
+        const updatedRequest = await response.json();
+
+        setRequests(prev =>
+            prev.map(req =>
+                req._id === updatedRequest._id
+                    ? updatedRequest
+                    : req
+            )
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
 
 
     return (
@@ -99,7 +172,7 @@ function Requests({ assets, setAssets, requests, setRequests }) {
         <h2 className="text-4xl font-bold text-green-600 mt-2">
             {
                 requests.filter(
-                    r => r.requestStatus === "Approved"
+                    r => r.status === "Approved"
                 ).length
             }
         </h2>
@@ -136,13 +209,13 @@ function Requests({ assets, setAssets, requests, setRequests }) {
                             const alreadyRequested =
                                 requests.some(
                                     (request) =>
-                                        request.assetId === asset.id &&
-                                        request.requestStatus === "Pending"
+                                        request.assetId === asset._id &&
+                                        request.status === "Pending"
                                 );
 
                             return (
                                 <tr
-    key={asset.id}
+    key={asset._id}
     className="
         border-b
         hover:bg-blue-50
@@ -150,9 +223,11 @@ function Requests({ assets, setAssets, requests, setRequests }) {
         duration-300
     "
 >
-                                    <td className="p-4 font-semibold text-slate-700">
-    #{asset.id}
+                                    
+    <td className="p-4 font-semibold text-slate-700">
+    #{asset._id.slice(-6)}
 </td>
+
 
                                     <td className="p-4 font-medium text-slate-800">
     {asset.name}
@@ -255,7 +330,7 @@ function Requests({ assets, setAssets, requests, setRequests }) {
 
                             return (
                                 <tr
-    key={request.id}
+    key={request._id}
     className="
         border-b
         hover:bg-blue-50
@@ -273,7 +348,7 @@ function Requests({ assets, setAssets, requests, setRequests }) {
     <div className="text-sm text-gray-500">
         {
             assets.find(
-                asset => asset.id === request.assetId
+                asset => asset._id === request.assetId
             )?.name
         }
     </div>
@@ -281,10 +356,10 @@ function Requests({ assets, setAssets, requests, setRequests }) {
 </td>
                                     <td className="p-4">
                                         <span className="pending-badge">
-                                            {request.requestStatus}
+                                            {request.status}
                                         </span>
                                     </td>
-                                    <td className="p-4">  {request.requestDate}</td>
+                                    <td className="p-4">  {new Date(request.createdAt).toLocaleDateString()}</td>
                                     <td className="p-4">
 
                                         <button

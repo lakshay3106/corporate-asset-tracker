@@ -19,17 +19,9 @@ function App() {
 
     const [assets, setAssets] = useState([]);
 
-    const initialRequests = [
-  {
-    id: 1,
-    employeeName: "Lakshay",
-    assetId: 101,
-    requestStatus: "Pending",
-    requestDate: "2026-06-20"
-  }
-];
 
-const [requests, setRequests] = useState(initialRequests);
+const [requests, setRequests] = useState([]);
+
 useEffect(()=>{
   fetch("http://localhost:5000/assets")
     .then((response)=>response.json())
@@ -40,6 +32,20 @@ useEffect(()=>{
       console.error(error);
     })
 },[]);
+
+
+useEffect(()=>{
+  fetch("http://localhost:5000/requests")
+    .then((response)=>response.json())
+    .then((data)=>{
+      setRequests(data);
+    })
+    .catch((error)=>{
+      console.error(error);
+    })
+},[]);
+
+
 
 
   return (
